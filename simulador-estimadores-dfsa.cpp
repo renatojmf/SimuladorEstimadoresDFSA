@@ -7,14 +7,19 @@ int main(){
     int etiquetas_iniciais;
     int quantidade_inicial_slots;
 
-    cin>>etiquetas_iniciais>>quantidade_inicial_slots;
-
+    cout<<"Digite o número de etiquetas: ";
+    cin>>etiquetas_iniciais;
+    cout<<endl;
+    cout<<"Digite a quantidade de slots inicial do quadro: ";
+    cin>>quantidade_inicial_slots;
+    cout<<endl;
 
     int etiquetas = etiquetas_iniciais;
     int slots = quantidade_inicial_slots;
 
-    int quadro[slots] = {0};
+    
 
+    int quadro[slots] = {0};
 
     srand(time(0));
     for(int i=0;i<etiquetas;i++){
@@ -22,12 +27,23 @@ int main(){
         quadro[(rand() % slots)] +=1;
 
     }
+    int sucesso = 0,colisao = 0, vazio = 0;
 
     for(int i=0;i<slots;i++){
         
-        cout<<quadro[i]<<endl;
+        if(quadro[i]==0){
+            vazio++;
+        }else if(quadro[i]==1){
+            sucesso++;
+        }else if(quadro[i]>1){
+            colisao++;
+        }
 
     }
+
+    cout<<"Sucesso: "<<sucesso<<endl;
+    cout<<"Colisao: "<<colisao<<endl;
+    cout<<"Vazio: "<<vazio<<endl;
 
     return 0;
 }
