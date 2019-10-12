@@ -17,33 +17,39 @@ int main(){
     int etiquetas = etiquetas_iniciais;
     int slots = quantidade_inicial_slots;
 
-    
+    while(etiquetas){
 
-    int quadro[slots] = {0};
+        int quadro[slots] = {0};
 
-    srand(time(0));
-    for(int i=0;i<etiquetas;i++){
-        
-        quadro[(rand() % slots)] +=1;
+        srand(time(0));
+        for(int i=0;i<etiquetas;i++){
+            
+            quadro[(rand() % slots)] +=1;
 
-    }
-    int sucesso = 0,colisao = 0, vazio = 0;
+        }
+        int sucesso = 0,colisao = 0, vazio = 0;
 
-    for(int i=0;i<slots;i++){
-        
-        if(quadro[i]==0){
-            vazio++;
-        }else if(quadro[i]==1){
-            sucesso++;
-        }else if(quadro[i]>1){
-            colisao++;
+        for(int i=0;i<slots;i++){
+            
+            if(quadro[i]==0){
+                vazio++;
+            }else if(quadro[i]==1){
+                sucesso++;
+            }else if(quadro[i]>1){
+                colisao++;
+            }
+
         }
 
-    }
+        cout<<"Etiquetas: "<<etiquetas;
+        cout<<"  Slots: "<<slots;
+        cout<<"  Sucesso: "<<sucesso;
+        cout<<"  Colisao: "<<colisao;
+        cout<<"  Vazio: "<<vazio<<endl;
 
-    cout<<"Sucesso: "<<sucesso<<endl;
-    cout<<"Colisao: "<<colisao<<endl;
-    cout<<"Vazio: "<<vazio<<endl;
+        etiquetas = etiquetas - sucesso;
+
+    }
 
     return 0;
 }
