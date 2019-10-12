@@ -2,6 +2,13 @@
 
 using namespace std;
 
+int lowerBound(int colisao){
+
+    int novoSlot = 2 * colisao;
+
+    return novoSlot;
+}
+
 int main(){
 
     int etiquetas_iniciais;
@@ -48,6 +55,8 @@ int main(){
         cout<<"  Vazio: "<<vazio<<endl;
 
         etiquetas = etiquetas - sucesso;
+
+        slots = lowerBound(colisao);
 
     }
 
