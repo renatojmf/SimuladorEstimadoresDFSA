@@ -1,0 +1,17 @@
+body{
+    margin: 0;
+}
+
+
+button{
+    border-style: none;
+    font-weight: bold;
+    margin-right: 5px;
+       
+}
+
+/*canvas#lineColision{
+    height: 450px; 
+    width: 550;
+    
+}*/

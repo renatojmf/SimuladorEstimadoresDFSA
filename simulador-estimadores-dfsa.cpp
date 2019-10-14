@@ -2,6 +2,7 @@
 
 using namespace std;
 
+//Função do estimador lower bound
 int lowerBound(int colisao){
 
     int novoSlot = 2 * colisao;
