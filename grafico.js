@@ -9,23 +9,27 @@ function rodarGrafico(){
     
         // The data for our dataset
         data: {
-            labels: dadosJSON['etiquetas'],
+            labels: media['etiquetas'],
             datasets: [{
                 label: 'Slots totais',
                 borderColor: 'rgb(0,0,0)',
-                data: dadosJSON['total']['slots']
+                data: media['slots']
             },{
                 label: 'Slots vazios totais',
                 borderColor: 'rgb(255,0,0)',
-                data: dadosJSON['total']['vazio']
+                data: media['vazio']
             },{
                 label: 'Colisões totais',
                 borderColor: 'rgb(0,255,0)',
-                data: dadosJSON['total']['colisao']
+                data: media['colisao']
             },{
                 label: 'Eficiência',
                 borderColor: 'rgb(0,0,255)',
-                data: dadosJSON['total']['eficiencia']
+                data: media['eficiencia']
+            },{
+                label: 'Tempo médio de execução',
+                borderColor: 'rgb(0,255,255)',
+                data: media['tempo']
             }]
         },
     
