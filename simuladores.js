@@ -7,7 +7,7 @@ var etiquetas_repeticao;
 var num_Slots = [];
 var etiquetas;
 var slots;
-var quadro;
+//var quadro;
 
 //JSON dos dados calculados
 var dadosJSON = {"etiquetas":[], "total":{"slots": [], "sucesso": [],"colisao": [], "vazio": [], "eficiencia": []},
@@ -45,25 +45,23 @@ function eomLee(colisoes){
 function dfsa(){
 
     let totais = {"slots":0,"sucesso":0,"colisao":0,"vazio":0, "tempo":0};
-    //let etiquetasTemp = etiquetas;
+    let etiquetasTemp = etiquetas;
+    let slotsTemp = slots;
     //variavel para pegar tempo de começo do loop
     let tempo_comeco = performance.now();
-    console.log("começando while");
-    while(etiquetas > 0){
+
+    while(etiquetasTemp > 0){
+        let quadro = new Array(slotsTemp);
         
-        quadro = new Array(slots);
-        
-        console.log("começando primeiro for");
         //inicializando array
         for(let i = 0; i < quadro.length; i++){
             quadro[i] = 0;
         }
 
-        console.log("começando segundo for");
         //randomizador pra determinar etiquetas e slots
-        for(let i = 0; i < etiquetas; i++){
-            random = Math.floor(Math.random() * (slots + 1)); 
-            let temp = random % slots;
+        for(let i = 0; i < etiquetasTemp; i++){
+            random = Math.floor(Math.random() * (slotsTemp + 1)); 
+            let temp = random % slotsTemp;
             quadro[temp]+= 1;
         }
 
@@ -71,9 +69,8 @@ function dfsa(){
         let colisao = 0;
         let vazio = 0;
 
-        console.log("começando terceiro for");
         //checar a quantidade de slots vazios, sucesso e em colisão que ocorreram
-        for(let i = 0; i < slots; i++){
+        for(let i = 0; i < slotsTemp; i++){
             if(quadro[i] == 0){
                 vazio++;
             } else if(quadro[i] == 1){
@@ -83,21 +80,20 @@ function dfsa(){
             }
         }
         
-        totais['slots'] += slots;
+        totais['slots'] += slotsTemp;
         totais['sucesso'] += sucesso;
         totais['colisao'] += colisao;
         totais['vazio'] += vazio;
 
-        etiquetas = etiquetas - sucesso;
+        etiquetasTemp -= sucesso;
         
         if(algoritmo==1){
-            slots = lowerBound(colisao);
+            slotsTemp = lowerBound(colisao);
 
         }else{
-            slots = eomLee(colisao);
+            slotsTemp = eomLee(colisao);
         }
     }
-    console.log("terminou while");
     //variavel para pegar o tempo total de execução do estimador
     let tempo_fim = performance.now() - tempo_comeco;
 
@@ -130,10 +126,8 @@ function calcular(){
             media['vazio'][indice]+=dados['vazio'];
             media['sucesso'][indice]+=dados['sucesso'];
             media['tempo'][indice]+=dados['tempo'];
-            console.log(dados['slots']);
             
         }
-        console.log('medias: '+media['slots'][indice]);
         media['slots'][indice] /= etiquetas_repeticao;
         media['colisao'][indice] /= etiquetas_repeticao;
         media['vazio'][indice] /= etiquetas_repeticao;
