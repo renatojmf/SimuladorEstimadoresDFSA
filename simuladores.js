@@ -50,7 +50,7 @@ function eomLee(NumColisoes,NumSucessos,NumSlots){
         Bk = NumSlots/((Yk*NumColisoes)+NumSucessos);
         frac = Math.exp(-(1.0/Bk));
         Numerador = 1 - frac;
-        Denominador = (Bk * (1.0 - (1.0 + (1.0/Bk)) * frac));
+        Denominador = (Bk * (1.0 - (1.0 + (1.0/Bk))* frac));
         YkProx = Numerador/Denominador;
     } while(Math.abs(Yk-YkProx) >= 0.001);
 
@@ -153,7 +153,7 @@ function calcular(){
         media['sucesso'][indice] /= etiquetas_repeticao;
         media['tempo'][indice] /= etiquetas_repeticao;
         media['eficiencia'][indice] = media['sucesso'][indice]/media['slots'][indice];
-
+        
         slots = slots_iniciais;
         indice++;
         etiquetas = etiquetas_iniciais + (etiquetas_incremento*indice);
