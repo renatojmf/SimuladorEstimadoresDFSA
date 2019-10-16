@@ -13,22 +13,27 @@ function rodarGrafico(){
             datasets: [{
                 label: 'Slots totais',
                 borderColor: 'rgb(0,0,0)',
+                fill: false,
                 data: media['slots']
             },{
                 label: 'Slots vazios totais',
                 borderColor: 'rgb(255,0,0)',
+                fill: false,
                 data: media['vazio']
             },{
                 label: 'Colisões totais',
                 borderColor: 'rgb(0,255,0)',
+                fill: false,
                 data: media['colisao']
             },{
                 label: 'Eficiência',
                 borderColor: 'rgb(0,0,255)',
+                fill: false,
                 data: media['eficiencia']
             },{
                 label: 'Tempo médio de execução',
                 borderColor: 'rgb(0,255,255)',
+                fill: false,
                 data: media['tempo']
             }]
         },
