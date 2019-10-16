@@ -7,6 +7,7 @@ var etiquetas_repeticao;
 var num_Slots = [];
 var etiquetas;
 var slots;
+var limiar = 1e-3;
 //var quadro;
 
 //JSON dos dados calculados
@@ -38,8 +39,19 @@ function schoute(colisoes){
     return novoSlot;
 }
 
-function eomLee(colisoes){
-    return colisoes;
+function eomLee(NumColisoes,NumSucessos,NumSlots){
+    let YkProx = 2.0;
+    let Yk;
+    do{
+        Yk=YkProx;
+        let Bk = NumSlots/((Yk*NumColisoes)+NumSucessos);
+        expBk = Math.exp(-1/Bk);
+
+        YkProx = (1-expBk)/(Bk*(1-(1+(1/Bk))*expBk));
+    }
+    while(Yk-YkProx>=limiar);
+
+    return Math.ceil(YkProx*NumColisoes);
 }
 
 function dfsa(){
@@ -91,7 +103,8 @@ function dfsa(){
             slotsTemp = lowerBound(colisao);
 
         }else{
-            slotsTemp = eomLee(colisao);
+            slotsTemp = eomLee(colisao,sucesso,slotsTemp);
+            //console.log(etiquetasTemp+ "  "+ slotsTemp + "  " + sucesso+ "  " + colisao + "  "+ vazio);
         }
     }
     //variavel para pegar o tempo total de execução do estimador
@@ -126,8 +139,10 @@ function calcular(){
             media['vazio'][indice]+=dados['vazio'];
             media['sucesso'][indice]+=dados['sucesso'];
             media['tempo'][indice]+=dados['tempo'];
+            //console.log(media['tempo'][indice]);
             
         }
+        //console.log(media['tempo']);
         media['slots'][indice] /= etiquetas_repeticao;
         media['colisao'][indice] /= etiquetas_repeticao;
         media['vazio'][indice] /= etiquetas_repeticao;
@@ -135,9 +150,10 @@ function calcular(){
         media['tempo'][indice] /= etiquetas_repeticao;
         media['eficiencia'][indice] = media['sucesso'][indice]/media['slots'][indice];
 
-        etiquetas = etiquetas_iniciais + (etiquetas_incremento*indice);
         slots = slots_iniciais;
         indice++;
+        etiquetas = etiquetas_iniciais + (etiquetas_incremento*indice);
+
     }
     rodarGrafico();
 }
