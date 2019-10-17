@@ -143,6 +143,7 @@ function calcular(){
         media['sucesso'][indice] /= etiquetas_repeticao;
         media['tempo'][indice] /= etiquetas_repeticao;
         media['eficiencia'][indice] = media['sucesso'][indice]/media['slots'][indice];
+        media['eficiencia'][indice] *=100;
         
         slots = slots_iniciais;
         indice++;

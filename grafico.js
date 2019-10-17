@@ -29,17 +29,12 @@ function rodarGrafico(){
                 label: 'Eficiência',
                 borderColor: 'rgb(0,0,255)',
                 fill: false,
-                data: media['eficiencia']
+                data: media['eficiencia'].concat([0,100])
             },{
                 label: 'Tempo médio de execução',
                 borderColor: 'rgb(0,255,255)',
                 fill: false,
                 data: media['tempo']
-            },{
-                label: 'Estimativas',
-                borderColor: 'rgb(255,255,255)',
-                fill: false,
-                data: [0,0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90,1]
             }]
         },
     
