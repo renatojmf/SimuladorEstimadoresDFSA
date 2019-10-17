@@ -33,7 +33,17 @@
     <form id="resultados">
         resultado: <output id="result" type="number"></output>
     </form>
-    <canvas id="lineColision"></canvas>
+    <div class="container-chart-container">
+        <div class="chart-container">
+            <canvas id="graficoSlotsTotais"></canvas>
+            <canvas id="graficoSlotsVazios"></canvas>
+            <canvas id="graficoSlotsColisoes"></canvas>
+            <canvas id="graficoSlotsEficiencia"></canvas>
+            <canvas id="graficoSlotsEstimador"></canvas>
+            <canvas id="graficoSlotsSimulador"></canvas>
+        </div>
+    </div>
+    
     <script src="simuladores.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="grafico.js"></script>
