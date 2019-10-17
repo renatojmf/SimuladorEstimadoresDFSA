@@ -7,7 +7,6 @@ var etiquetas_repeticao;
 var num_Slots = [];
 var etiquetas;
 var slots;
-var limiar = 1e-3;
 //var quadro;
 
 //JSON dos dados calculados
@@ -41,17 +40,22 @@ function schoute(colisoes){
 
 function eomLee(NumColisoes,NumSucessos,NumSlots){
     let YkProx = 2.0;
+    let Bk;
+    let Numerador;
+    let Denominador;
+    let frac;
     let Yk;
     do{
         Yk=YkProx;
-        let Bk = NumSlots/((Yk*NumColisoes)+NumSucessos);
-        expBk = Math.exp(-1/Bk);
+        Bk = NumSlots/((Yk*NumColisoes)+NumSucessos);
+        frac = Math.exp(-(1.0/Bk));
+        Numerador = 1 - frac;
+        Denominador = (Bk * (1.0 - (1.0 + (1.0/Bk))* frac));
+        YkProx = Numerador/Denominador;
+    } while(Math.abs(Yk-YkProx) >= 0.001);
 
-        YkProx = (1-expBk)/(Bk*(1-(1+(1/Bk))*expBk));
-    }
-    while(Yk-YkProx>=limiar);
-
-    return Math.ceil(YkProx*NumColisoes);
+    let resultado = NumColisoes * YkProx;
+    return Math.ceil(resultado);
 }
 
 function dfsa(){
@@ -149,7 +153,7 @@ function calcular(){
         media['sucesso'][indice] /= etiquetas_repeticao;
         media['tempo'][indice] /= etiquetas_repeticao;
         media['eficiencia'][indice] = media['sucesso'][indice]/media['slots'][indice];
-
+        
         slots = slots_iniciais;
         indice++;
         etiquetas = etiquetas_iniciais + (etiquetas_incremento*indice);
