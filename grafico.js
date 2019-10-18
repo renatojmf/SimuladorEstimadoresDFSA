@@ -123,7 +123,7 @@ function rodarGrafico(){
         // The data for our dataset
         data: {
             labels: media['lowerbound']['etiquetas'],
-            datasets: gerarDataObject("tempo")
+            datasets: gerarDataObject("tempoEst")
         },
     
         // Configuration options go here
@@ -140,7 +140,7 @@ function rodarGrafico(){
         // The data for our dataset
         data: {
             labels: media['lowerbound']['etiquetas'],
-            datasets: gerarDataObject("tempo")
+            datasets: gerarDataObject("tempoSim")
         },
     
         // Configuration options go here

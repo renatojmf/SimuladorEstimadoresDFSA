@@ -44,8 +44,10 @@ function getInput(){
 }
 
 function lowerBound(colisoes){
+    let tempo_comeco = performance.now();
     let novoSlot = 2 * colisoes;
-    return novoSlot;
+    let tempo_fim = performance.now() - tempo_comeco;
+    return [novoSlot,tempo_fim];
 }
 
 function schoute(colisoes){
@@ -60,6 +62,7 @@ function eomLee(NumColisoes,NumSucessos,NumSlots){
     let Denominador;
     let frac;
     let Yk;
+    let tempo_comeco = performance.now();
     do{
         Yk=YkProx;
         Bk = NumSlots/((Yk*NumColisoes)+NumSucessos);
@@ -68,9 +71,9 @@ function eomLee(NumColisoes,NumSucessos,NumSlots){
         Denominador = (Bk * (1.0 - (1.0 + (1.0/Bk))* frac));
         YkProx = Numerador/Denominador;
     } while(Math.abs(Yk-YkProx) >= 0.001);
-
     let resultado = NumColisoes * YkProx;
-    return Math.ceil(resultado);
+    let tempo_fim = performance.now() - tempo_comeco;
+    return [Math.ceil(resultado),tempo_fim];
 }
 
 function ilmc(){
@@ -83,11 +86,9 @@ function vahedi(){
 
 function dfsa(alg){
 
-    let totais = {"slots":0,"sucesso":0,"colisao":0,"vazio":0, "tempo":0};
+    let totais = {"slots":0,"sucesso":0,"colisao":0,"vazio":0, "tempoEst":0};
     let etiquetasTemp = etiquetas;
     let slotsTemp = slots;
-    //variavel para pegar tempo de começo do loop
-    let tempo_comeco = performance.now();
 
     while(etiquetasTemp > 0){
         let quadro = new Array(slotsTemp);
@@ -127,10 +128,14 @@ function dfsa(alg){
         etiquetasTemp -= sucesso;
         
         if(alg=="lowerbound"){
-            slotsTemp = lowerBound(colisao);
+            let temp = lowerBound(colisao);
+            slotsTemp = temp[0];
+            totais['tempoEst'] = temp[1];
 
         }else if(alg=="eomlee"){
-            slotsTemp = eomLee(colisao,sucesso,slotsTemp);
+            let temp = eomLee(colisao,sucesso,slotsTemp);
+            slotsTemp = temp[0];
+            totais['tempoEst'] = temp[1]; 
 
         }else if(alg=="ilcm"){
             slotsTemp = ilmc();
@@ -140,11 +145,7 @@ function dfsa(alg){
 
         }
     }
-    //variavel para pegar o tempo total de execução do estimador
-    let tempo_fim = performance.now() - tempo_comeco;
-
-    totais['tempo'] = tempo_fim;
-
+    
     return totais;
 }
 
@@ -162,7 +163,7 @@ function calc(){
     if(algoritmo_vahedi){
         calcular("vahedi");
     }
-
+    document.getElementById("container-chart-id").style.visibility = "visible";
     rodarGrafico();
 }
 
@@ -170,7 +171,7 @@ function calcular(alg){
     etiquetas = etiquetas_iniciais;
     slots = slots_iniciais;
 
-    media[alg] = {"etiquetas":[],"slots":[],"sucesso":[],"colisao":[],"vazio":[], "tempo":[], "eficiencia":[]};
+    media[alg] = {"etiquetas":[],"slots":[],"sucesso":[],"colisao":[],"vazio":[], "tempoEst":[], "tempoSim":[], "eficiencia":[]};
 
     let indice=0;
     while(etiquetas<=etiquetas_maxima){
@@ -181,24 +182,28 @@ function calcular(alg){
         media[alg]['colisao'][indice]=0;
         media[alg]['vazio'][indice]=0;
         media[alg]['sucesso'][indice]=0;
-        media[alg]['tempo'][indice]=0;
+        media[alg]['tempoEst'][indice]=0;
         media[alg]['eficiencia'][indice]=0;
+        media[alg]['tempoSim'][indice]=0;
 
         let i;
         for(i=0;i<etiquetas_repeticao;i++){
+            let tempo_comeco = performance.now();
             let dados = dfsa(alg);
+            let tempo_fim = performance.now() - tempo_comeco;
             media[alg]['slots'][indice]+=dados['slots'];
             media[alg]['colisao'][indice]+=dados['colisao'];
             media[alg]['vazio'][indice]+=dados['vazio'];
             media[alg]['sucesso'][indice]+=dados['sucesso'];
-            media[alg]['tempo'][indice]+=dados['tempo'];
+            media[alg]['tempoEst'][indice]+=dados['tempoEst'];
+            media[alg]['tempoSim'][indice]+=tempo_fim;
             
         }
         media[alg]['slots'][indice] /= etiquetas_repeticao;
         media[alg]['colisao'][indice] /= etiquetas_repeticao;
         media[alg]['vazio'][indice] /= etiquetas_repeticao;
         media[alg]['sucesso'][indice] /= etiquetas_repeticao;
-        media[alg]['tempo'][indice] /= etiquetas_repeticao;
+        media[alg]['tempoEst'][indice] /= etiquetas_repeticao;
         media[alg]['eficiencia'][indice] = media[alg]['sucesso'][indice]/media[alg]['slots'][indice];
         media[alg]['eficiencia'][indice] *=100;
         
