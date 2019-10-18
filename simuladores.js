@@ -80,9 +80,77 @@ function ilmc(){
     return 1000; //provisório
 }
 
-function vahedi(){
-    return 1000; //provisório
+function vahedi(Empty, Success, Colisions){
+    let L = Empty + Success + Colisions;
+    let n = 2.0 * Colisions + Success;
+    let next = 0.0;
+    let previous = -1.0;
+    let p1;
+    let p2;
+    let p3;
+    let nume_1;
+    let deno_1;
+    let deno_2;
+    let sub;
+    let aux_deno_2;
+    let sub2;
+    let num_deno_2;
+    let deno_deno_2;
+    let facS;
+    let facL;
+    let facE;
+    let facC;
+    facS = factorialize(Success);//S!
+    facL = factorialize(L);//L!
+    facE = factorialize(Empty);//E!
+    facC = factorialize(Colisions);//C!
+    sub2 = L - Empty - Success; //L - E - S
+
+    let tempo_comeco = performance.now();
+
+    while(previous < next){
+        p1 = Math.pow((1.0 - (Empty/L)), n); //(1-(E/L)) ^ n
+        nume_1 = factorialize(n); //n!
+        sub = n - Success;//n-S
+        aux_deno_2 = factorialize(sub);//(n-S)!
+        deno_1 = facS * aux_deno_2;//S!(n-S)!
+        num_deno_2 = Math.pow(sub2, (n - Success)); // (L-E-S)^(n-S)
+        deno_deno_2 = Math.pow(L - Empty, n);//(L-E)^n
+        deno_2 = (num_deno_2 / deno_deno_2) * facS; // ((L-E-S)^(n-S) / (L-E)^n)* S!
+        p2 = nume_1/(deno_1 * deno_2); 
+        p3 = 0;
+        
+        for(let k =0.0; k < Colisions; k++){
+            for(let v = 0.0; v < (Colisions-k); v++){
+                let aux = Math.pow((-1.0),(k+v));//(-1)^k+v
+                let auxK = factorialize(k);//k!
+                let auxSub = Colisions - k;// C-k
+                let facAuxSub = factorialize(auxSub); //(C-k)!
+                let a3 = (facC/(auxK * facAuxSub));//C!/k!(C-k)!
+                let a4 = ( facAuxSub / (factorialize(v) * (factorialize(Colisions-k-v))));//(C-k)!/v!(C-k-v)!
+                let a5 = (aux_deno_2)/(factorialize(n-Success-k));//((n-S)!/(n-S-k)!)
+                let auxExp = Math.pow((Colisions-k-v), (n-Success-k));//(C-k-v)^n-S-k
+                let a6 = auxExp / Math.pow(Colisions,n-Success);//((C-k-v)^n-S-k/C^n-S)
+                p3 = p3 + (aux * facC * a3 * a4 * a5 * a6);
+            }
+        }
+
+        previous = next;
+        next = (facL/(facE*facS*facC))*p1*p2*p3;
+        n = n+1;
+    }
+    let tempo_fim = performance.now() - tempo_comeco;
+    return [n - 2, tempo_fim]; //provisório
 }
+
+function factorialize(num) {
+    if (num === 0.0 || num === 1.0)
+      return 1.0;
+    for (var i = num - 1.0; i >= 1.0; i--) {
+      num *= i;
+    }
+    return num;
+  }
 
 function dfsa(alg){
 
@@ -93,7 +161,7 @@ function dfsa(alg){
     while(etiquetasTemp > 0){
         let quadro = new Array(slotsTemp);
         
-        //inicializando array
+        //inicializando array9
         for(let i = 0; i < quadro.length; i++){
             quadro[i] = 0;
         }
@@ -141,7 +209,9 @@ function dfsa(alg){
             slotsTemp = ilmc();
 
         }else if(alg=="vahedi"){
-            slotsTemp = vahedi();
+            let temp = vahedi(vazio,sucesso,colisao);
+            slotsTemp = temp[0];
+            totais['tempoEst'] = temp[1]; 
 
         }
     }
