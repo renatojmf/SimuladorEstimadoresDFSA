@@ -2,6 +2,22 @@ body{
     margin: 0;
 }
 
+.nome_eixo_Y{
+    font-weight: bolder;
+    transform: rotate(270deg);
+    position: absolute;
+    text-align: center;
+    height: 500px;
+    width: 450px;
+}
+
+.nome_eixo_x{
+    font-weight: bolder;
+    position: initial;
+    text-align: center;
+    height: 50px;
+    width: 650px;
+}
 .container-chart-container{
     height: 100%;
     display: flex;
@@ -12,6 +28,4 @@ body{
 .chart-container {
     width: 650px;
     height: 500px;
-    align-items: center;
-    justify-content: center;
-  }
+}

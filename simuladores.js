@@ -1,24 +1,46 @@
 var etiquetas_iniciais;
 var slots_iniciais;
-var algoritmo; //1-Lower Bound, 2-Eom-Lee
+//var algoritmo; //1-Lower Bound, 2-Eom-Lee
 var etiquetas_incremento;
 var etiquetas_maxima;
 var etiquetas_repeticao;
+var algoritmo_lowerBound;
+var algoritmo_eomlee;
+var algoritmo_ilcm;
+var algoritmo_vahedi;
 var num_Slots = [];
 var etiquetas;
 var slots;
 
 //JSON dos dados calculados
-var media = {"etiquetas":[],"slots":[],"sucesso":[],"colisao":[],"vazio":[], "tempo":[], "eficiencia":[]};
+var media = {"lowerbound":[],"eomlee":[],"ilcm":[],"vahedi":[]};
+
+function definirEstimadores(alg){
+
+    for(let i=0;i<alg.length;i++){
+        if(alg[i].value == "1"){
+            algoritmo_lowerBound = true;
+        }else if(alg[i].value == "2"){
+            algoritmo_eomlee = true;
+        }else if(alg[i].value == "3"){
+            algoritmo_ilcm = true;
+        }else if(alg[i].value == "4"){
+            algoritmo_vahedi = true;
+        }
+    }
+
+}
 
 function getInput(){
    etiquetas_iniciais = parseFloat(document.getElementById('etiquetas').value);
    slots_iniciais = parseFloat(document.getElementById('slots').value);
-   algoritmo = document.querySelector('input[name="protocoloOp"]:checked').value;
+  // algoritmo = document.querySelector('input[name="protocoloOp"]:checked').value;
    etiquetas_incremento = parseFloat(document.getElementById('etiquetas-incremento').value);
    etiquetas_maxima = parseFloat(document.getElementById('etiquetas-maxima').value);
    etiquetas_repeticao = parseFloat(document.getElementById('etiquetas-repeticao').value);
-   calcular();
+   let algoritmo = document.getElementsByName('protocoloOp');
+   definirEstimadores(algoritmo);
+    calc();
 }
 
 function lowerBound(colisoes){
@@ -51,7 +73,15 @@ function eomLee(NumColisoes,NumSucessos,NumSlots){
     return Math.ceil(resultado);
 }
 
-function dfsa(){
+function ilmc(){
+
+}
+
+function vahedi(){
+
+}
+
+function dfsa(alg){
 
     let totais = {"slots":0,"sucesso":0,"colisao":0,"vazio":0, "tempo":0};
     let etiquetasTemp = etiquetas;
@@ -96,7 +126,7 @@ function dfsa(){
 
         etiquetasTemp -= sucesso;
         
-        if(algoritmo==1){
+        if(alg=="lowerbound"){
             slotsTemp = lowerBound(colisao);
 
         }else{
@@ -111,39 +141,58 @@ function dfsa(){
     return totais;
 }
 
-function calcular(){
+function calc(){
+
+    if(algoritmo_lowerBound){
+        calcular("lowerbound");
+    }
+    if(algoritmo_eomlee){
+        calcular("eomlee");
+    }
+    if(algoritmo_ilcm){
+        calcular("ilcm");
+    }
+    if(algoritmo_vahedi){
+        calcular("vahedi");
+    }
+
+}
+
+function calcular(alg){
     etiquetas = etiquetas_iniciais;
     slots = slots_iniciais;
+
+    media[alg] = {"etiquetas":[],"slots":[],"sucesso":[],"colisao":[],"vazio":[], "tempo":[], "eficiencia":[]};
 
     let indice=0;
     while(etiquetas<=etiquetas_maxima){
 
-        media['etiquetas'][indice]=etiquetas;
+        media[alg]['etiquetas'][indice]=etiquetas;
         
-        media['slots'][indice]=0;
-        media['colisao'][indice]=0;
-        media['vazio'][indice]=0;
-        media['sucesso'][indice]=0;
-        media['tempo'][indice]=0;
-        media['eficiencia'][indice]=0;
+        media[alg]['slots'][indice]=0;
+        media[alg]['colisao'][indice]=0;
+        media[alg]['vazio'][indice]=0;
+        media[alg]['sucesso'][indice]=0;
+        media[alg]['tempo'][indice]=0;
+        media[alg]['eficiencia'][indice]=0;
 
         let i;
         for(i=0;i<etiquetas_repeticao;i++){
-            let dados = dfsa();
-            media['slots'][indice]+=dados['slots'];
-            media['colisao'][indice]+=dados['colisao'];
-            media['vazio'][indice]+=dados['vazio'];
-            media['sucesso'][indice]+=dados['sucesso'];
-            media['tempo'][indice]+=dados['tempo'];
+            let dados = dfsa(alg);
+            media[alg]['slots'][indice]+=dados['slots'];
+            media[alg]['colisao'][indice]+=dados['colisao'];
+            media[alg]['vazio'][indice]+=dados['vazio'];
+            media[alg]['sucesso'][indice]+=dados['sucesso'];
+            media[alg]['tempo'][indice]+=dados['tempo'];
             
         }
-        media['slots'][indice] /= etiquetas_repeticao;
-        media['colisao'][indice] /= etiquetas_repeticao;
-        media['vazio'][indice] /= etiquetas_repeticao;
-        media['sucesso'][indice] /= etiquetas_repeticao;
-        media['tempo'][indice] /= etiquetas_repeticao;
-        media['eficiencia'][indice] = media['sucesso'][indice]/media['slots'][indice];
-        media['eficiencia'][indice] *=100;
+        media[alg]['slots'][indice] /= etiquetas_repeticao;
+        media[alg]['colisao'][indice] /= etiquetas_repeticao;
+        media[alg]['vazio'][indice] /= etiquetas_repeticao;
+        media[alg]['sucesso'][indice] /= etiquetas_repeticao;
+        media[alg]['tempo'][indice] /= etiquetas_repeticao;
+        media[alg]['eficiencia'][indice] = media[alg]['sucesso'][indice]/media[alg]['slots'][indice];
+        media[alg]['eficiencia'][indice] *=100;
         
         slots = slots_iniciais;
         indice++;

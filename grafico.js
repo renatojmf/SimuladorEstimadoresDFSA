@@ -1,5 +1,3 @@
-
-
 function rodarGrafico(){
     var ctxTotais = document.getElementById('graficoSlotsTotais').getContext('2d');
     var ctxVazios = document.getElementById('graficoSlotsVazios').getContext('2d');
@@ -14,12 +12,12 @@ function rodarGrafico(){
     
         // The data for our dataset
         data: {
-            labels: media['etiquetas'],
+            labels: media['lowerbound']['etiquetas'],
             datasets: [{
-                label: 'Slots totais',
+                label: 'Lower Bound',
                 borderColor: 'rgb(0,0,0)',
                 fill: false,
-                data: media['slots']
+                data: media['lowerbound']['slots']
             }]
         },
     
@@ -36,12 +34,12 @@ function rodarGrafico(){
     
         // The data for our dataset
         data: {
-            labels: media['etiquetas'],
+            labels: media['lowerbound']['etiquetas'],
             datasets: [{
-                label: 'Slots vazios totais',
+                label: 'Lower Bound',
                 borderColor: 'rgb(255,0,0)',
                 fill: false,
-                data: media['vazio']
+                data: media['lowerbound']['vazio']
             }]
         },
     
@@ -58,12 +56,12 @@ function rodarGrafico(){
     
         // The data for our dataset
         data: {
-            labels: media['etiquetas'],
+            labels: media['lowerbound']['etiquetas'],
             datasets: [{
-                label: 'Colisões totais',
+                label: 'Lower Bound',
                 borderColor: 'rgb(0,255,0)',
                 fill: false,
-                data: media['colisao']
+                data: media['lowerbound']['colisao']
             }]
         },
     
@@ -80,12 +78,12 @@ function rodarGrafico(){
     
         // The data for our dataset
         data: {
-            labels: media['etiquetas'],
+            labels: media['lowerbound']['etiquetas'],
             datasets: [{
-                label: 'Eficiência',
+                label: 'Lower Bound',
                 borderColor: 'rgb(0,0,255)',
                 fill: false,
-                data: media['eficiencia'].concat([0,100])
+                data: media['lowerbound']['eficiencia'].concat([0,100])
             }]
         },
     
@@ -102,12 +100,12 @@ function rodarGrafico(){
     
         // The data for our dataset
         data: {
-            labels: media['etiquetas'],
+            labels: media['lowerbound']['etiquetas'],
             datasets: [{
-                label: 'Tempo médio de execução do estimador',
+                label: 'Lower Bound',
                 borderColor: 'rgb(0,255,255)',
                 fill: false,
-                data: media['tempo']
+                data: media['lowerbound']['tempo']
             }]
         },
     
@@ -124,12 +122,12 @@ function rodarGrafico(){
     
         // The data for our dataset
         data: {
-            labels: media['etiquetas'],
+            labels: media['lowerbound']['etiquetas'],
             datasets: [{
-                label: 'Tempo médio de execução do simulador',
+                label: 'Lower Bound',
                 borderColor: 'rgb(0,255,255)',
                 fill: false,
-                data: media['tempo']
+                data: media['lowerbound']['tempo']
             }]
         },
     
