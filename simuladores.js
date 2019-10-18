@@ -4,10 +4,10 @@ var slots_iniciais;
 var etiquetas_incremento;
 var etiquetas_maxima;
 var etiquetas_repeticao;
-var algoritmo_lowerBound;
-var algoritmo_eomlee;
-var algoritmo_ilcm;
-var algoritmo_vahedi;
+var algoritmo_lowerBound=false;
+var algoritmo_eomlee=false;
+var algoritmo_ilcm=false;
+var algoritmo_vahedi=false;
 var num_Slots = [];
 var etiquetas;
 var slots;
@@ -19,13 +19,13 @@ function definirEstimadores(alg){
 
     for(let i=0;i<alg.length;i++){
         if(alg[i].value == "1"){
-            algoritmo_lowerBound = true;
+            algoritmo_lowerBound = alg[i].checked;
         }else if(alg[i].value == "2"){
-            algoritmo_eomlee = true;
+            algoritmo_eomlee = alg[i].checked;
         }else if(alg[i].value == "3"){
-            algoritmo_ilcm = true;
+            algoritmo_ilcm = alg[i].checked;
         }else if(alg[i].value == "4"){
-            algoritmo_vahedi = true;
+            algoritmo_vahedi = alg[i].checked;
         }
     }
 
@@ -74,11 +74,11 @@ function eomLee(NumColisoes,NumSucessos,NumSlots){
 }
 
 function ilmc(){
-
+    return 1000; //provisório
 }
 
 function vahedi(){
-
+    return 1000; //provisório
 }
 
 function dfsa(alg){
@@ -129,8 +129,15 @@ function dfsa(alg){
         if(alg=="lowerbound"){
             slotsTemp = lowerBound(colisao);
 
-        }else{
+        }else if(alg=="eomlee"){
             slotsTemp = eomLee(colisao,sucesso,slotsTemp);
+
+        }else if(alg=="ilcm"){
+            slotsTemp = ilmc();
+
+        }else if(alg=="vahedi"){
+            slotsTemp = vahedi();
+
         }
     }
     //variavel para pegar o tempo total de execução do estimador
@@ -156,6 +163,7 @@ function calc(){
         calcular("vahedi");
     }
 
+    rodarGrafico();
 }
 
 function calcular(alg){
@@ -199,5 +207,8 @@ function calcular(alg){
         etiquetas = etiquetas_iniciais + (etiquetas_incremento*indice);
 
     }
-    rodarGrafico();
+
+    //Adição de 0 e 100 na eficiência para corrigir o gráfico
+    media[alg]['eficiencia'].push(0,100);
+
 }

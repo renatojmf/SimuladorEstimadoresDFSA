@@ -1,3 +1,43 @@
+function gerarDataObject(param){
+
+    let ds = [];
+
+    if(algoritmo_lowerBound){
+        ds.push({
+            label: 'Lower Bound',
+            borderColor: 'rgb(0,0,0)',
+            fill: false,
+            data: media['lowerbound'][param]
+        });
+    }
+    if(algoritmo_eomlee){
+        ds.push({
+            label: 'Eom Lee',
+            borderColor: 'rgb(0,0,255)',
+            fill: false,
+            data: media['eomlee'][param]
+        });
+    }
+    if(algoritmo_ilcm){
+        ds.push({
+            label: 'ILCM',
+            borderColor: 'rgb(0,255,0)',
+            fill: false,
+            data: media['ilcm'][param]
+        });
+    }
+    if(algoritmo_vahedi){
+        ds.push({
+            label: 'Vahedi',
+            borderColor: 'rgb(255,0,0)',
+            fill: false,
+            data: media['vahedi'][param]
+        });
+    }
+
+    return ds;
+}
+
 function rodarGrafico(){
     var ctxTotais = document.getElementById('graficoSlotsTotais').getContext('2d');
     var ctxVazios = document.getElementById('graficoSlotsVazios').getContext('2d');
@@ -13,12 +53,7 @@ function rodarGrafico(){
         // The data for our dataset
         data: {
             labels: media['lowerbound']['etiquetas'],
-            datasets: [{
-                label: 'Lower Bound',
-                borderColor: 'rgb(0,0,0)',
-                fill: false,
-                data: media['lowerbound']['slots']
-            }]
+            datasets: gerarDataObject("slots")
         },
     
         // Configuration options go here
@@ -35,12 +70,7 @@ function rodarGrafico(){
         // The data for our dataset
         data: {
             labels: media['lowerbound']['etiquetas'],
-            datasets: [{
-                label: 'Lower Bound',
-                borderColor: 'rgb(255,0,0)',
-                fill: false,
-                data: media['lowerbound']['vazio']
-            }]
+            datasets: gerarDataObject("vazio")
         },
     
         // Configuration options go here
@@ -57,12 +87,7 @@ function rodarGrafico(){
         // The data for our dataset
         data: {
             labels: media['lowerbound']['etiquetas'],
-            datasets: [{
-                label: 'Lower Bound',
-                borderColor: 'rgb(0,255,0)',
-                fill: false,
-                data: media['lowerbound']['colisao']
-            }]
+            datasets: gerarDataObject("colisao")
         },
     
         // Configuration options go here
@@ -79,18 +104,15 @@ function rodarGrafico(){
         // The data for our dataset
         data: {
             labels: media['lowerbound']['etiquetas'],
-            datasets: [{
-                label: 'Lower Bound',
-                borderColor: 'rgb(0,0,255)',
-                fill: false,
-                data: media['lowerbound']['eficiencia'].concat([0,100])
-            }]
+            datasets: gerarDataObject("eficiencia")
         },
     
         // Configuration options go here
         options: {
             responsive: true,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            min: 0,
+            max: 100
         }
     });
 
@@ -101,12 +123,7 @@ function rodarGrafico(){
         // The data for our dataset
         data: {
             labels: media['lowerbound']['etiquetas'],
-            datasets: [{
-                label: 'Lower Bound',
-                borderColor: 'rgb(0,255,255)',
-                fill: false,
-                data: media['lowerbound']['tempo']
-            }]
+            datasets: gerarDataObject("tempo")
         },
     
         // Configuration options go here
@@ -123,12 +140,7 @@ function rodarGrafico(){
         // The data for our dataset
         data: {
             labels: media['lowerbound']['etiquetas'],
-            datasets: [{
-                label: 'Lower Bound',
-                borderColor: 'rgb(0,255,255)',
-                fill: false,
-                data: media['lowerbound']['tempo']
-            }]
+            datasets: gerarDataObject("tempo")
         },
     
         // Configuration options go here
