@@ -1,49 +1,153 @@
+function gerarDataObject(param){
 
+    let ds = [];
+
+    if(algoritmo_lowerBound){
+        ds.push({
+            label: 'Lower Bound',
+            borderColor: 'rgb(0,0,0)',
+            fill: false,
+            data: media['lowerbound'][param]
+        });
+    }
+    if(algoritmo_eomlee){
+        ds.push({
+            label: 'Eom Lee',
+            borderColor: 'rgb(0,0,255)',
+            fill: false,
+            data: media['eomlee'][param]
+        });
+    }
+    if(algoritmo_ilcm){
+        ds.push({
+            label: 'ILCM',
+            borderColor: 'rgb(0,255,0)',
+            fill: false,
+            data: media['ilcm'][param]
+        });
+    }
+    if(algoritmo_vahedi){
+        ds.push({
+            label: 'Vahedi',
+            borderColor: 'rgb(255,0,0)',
+            fill: false,
+            data: media['vahedi'][param]
+        });
+    }
+
+    return ds;
+}
 
 function rodarGrafico(){
-    var ctx = document.getElementById('lineColision').getContext('2d');
+    var ctxTotais = document.getElementById('graficoSlotsTotais').getContext('2d');
+    var ctxVazios = document.getElementById('graficoSlotsVazios').getContext('2d');
+    var ctxColisoes = document.getElementById('graficoSlotsColisoes').getContext('2d');
+    var ctxEficiencia = document.getElementById('graficoSlotsEficiencia').getContext('2d');
+    var ctxEstimador = document.getElementById('graficoSlotsEstimador').getContext('2d');
+    var ctxSimulador = document.getElementById('graficoSlotsSimulador').getContext('2d');
 
-    var chart = new Chart(ctx, {
+    var grafico_slots_totais = new Chart(ctxTotais, {
         // The type of chart we want to create
         type: 'line',
     
         // The data for our dataset
         data: {
-            labels: media['etiquetas'],
-            datasets: [{
-                label: 'Slots totais',
-                borderColor: 'rgb(0,0,0)',
-                fill: false,
-                data: media['slots']
-            },{
-                label: 'Slots vazios totais',
-                borderColor: 'rgb(255,0,0)',
-                fill: false,
-                data: media['vazio']
-            },{
-                label: 'Colisões totais',
-                borderColor: 'rgb(0,255,0)',
-                fill: false,
-                data: media['colisao']
-            },{
-                label: 'Eficiência',
-                borderColor: 'rgb(0,0,255)',
-                fill: false,
-                data: media['eficiencia']
-            },{
-                label: 'Tempo médio de execução',
-                borderColor: 'rgb(0,255,255)',
-                fill: false,
-                data: media['tempo']
-            },{
-                label: 'Estimativas',
-                borderColor: 'rgb(255,255,255)',
-                fill: false,
-                data: [0,0.10,0.20,0.30,0.40,0.50,0.60,0.70,0.80,0.90,1]
-            }]
+            labels: media['lowerbound']['etiquetas'],
+            datasets: gerarDataObject("slots")
         },
     
         // Configuration options go here
-        options: {}
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
     });
+
+    var grafico_slots_vazios = new Chart(ctxVazios, {
+        // The type of chart we want to create
+        type: 'line',
+    
+        // The data for our dataset
+        data: {
+            labels: media['lowerbound']['etiquetas'],
+            datasets: gerarDataObject("vazio")
+        },
+    
+        // Configuration options go here
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    var grafico_slots_colisoes = new Chart(ctxColisoes, {
+        // The type of chart we want to create
+        type: 'line',
+    
+        // The data for our dataset
+        data: {
+            labels: media['lowerbound']['etiquetas'],
+            datasets: gerarDataObject("colisao")
+        },
+    
+        // Configuration options go here
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    var grafico_slots_eficiencia = new Chart(ctxEficiencia, {
+        // The type of chart we want to create
+        type: 'line',
+    
+        // The data for our dataset
+        data: {
+            labels: media['lowerbound']['etiquetas'],
+            datasets: gerarDataObject("eficiencia")
+        },
+    
+        // Configuration options go here
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            min: 0,
+            max: 100
+        }
+    });
+
+    var grafico_slots_tempo_estimador = new Chart(ctxEstimador, {
+        // The type of chart we want to create
+        type: 'line',
+    
+        // The data for our dataset
+        data: {
+            labels: media['lowerbound']['etiquetas'],
+            datasets: gerarDataObject("tempoEst")
+        },
+    
+        // Configuration options go here
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    var grafico_slots_tempo_Simulador = new Chart(ctxSimulador, {
+        // The type of chart we want to create
+        type: 'line',
+    
+        // The data for our dataset
+        data: {
+            labels: media['lowerbound']['etiquetas'],
+            datasets: gerarDataObject("tempoSim")
+        },
+    
+        // Configuration options go here
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+    
 }

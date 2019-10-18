@@ -2,16 +2,31 @@ body{
     margin: 0;
 }
 
-
-button{
-    border-style: none;
-    font-weight: bold;
-    margin-right: 5px;
-       
+.nome_eixo_Y{
+    font-weight: bolder;
+    transform: rotate(270deg);
+    position: absolute;
+    text-align: center;
+    height: 500px;
+    width: 450px;
 }
 
-/*canvas#lineColision{
-    height: 450px; 
-    width: 550;
-    
-}*/
+.nome_eixo_x{
+    font-weight: bolder;
+    position: initial;
+    text-align: center;
+    height: 50px;
+    width: 650px;
+}
+.container-chart-container{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+}
+
+.chart-container {
+    width: 650px;
+    height: 500px;
+}
